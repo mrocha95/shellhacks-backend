@@ -15,6 +15,13 @@ const transactionSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+  },
   creatorId: {
     type: mongoose.Types.ObjectId,
     ref: "User",
