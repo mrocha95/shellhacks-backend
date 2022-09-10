@@ -13,20 +13,20 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/signup", async (req, res) => {
-  if (!req.body.username || !req.body.password) {
-    return res.json({ message: "Please enter username and password" });
+  if (!req.body.email || !req.body.password) {
+    return res.json({ message: "Please enter email and password" });
   }
   try {
     const salt = bcrypt.genSaltSync(saltrounds);
     const hashedpass = bcrypt.hashSync(req.body.password, salt);
 
     const newUser = await User.create({
-      username: req.body.username,
+      email: req.body.email,
       password: hashedpass,
     });
 
     const payload = {
-      username: newUser.username,
+      email: newUser.email,
       id: newUser._id,
     };
     const token = jwt.sign(payload, process.env.SECRET, {
@@ -35,7 +35,7 @@ router.post("/signup", async (req, res) => {
     });
     res.json({
       token: token,
-      username: newUser.username,
+      email: newUser.email,
     });
   } catch (err) {
     res.status(400).json(err.message);
@@ -43,16 +43,16 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  if (!req.body.username || !req.body.password) {
-    return res.json({ message: "Incorrect username and password" });
+  if (!req.body.email || !req.body.password) {
+    return res.json({ message: "Incorrect email and password" });
   }
   try {
-    let foundUser = await User.findOne({ username: req.body.username });
+    let foundUser = await User.findOne({ email: req.body.email });
     if (!foundUser) {
-      return res.json({ message: "incorrect username or password" });
+      return res.json({ message: "incorrect email or password" });
     }
     const payload = {
-      username: foundUser.username,
+      email: foundUser.email,
       id: foundUser._id,
     };
     const token = jwt.sign(payload, process.env.SECRET, {
@@ -61,7 +61,7 @@ router.post("/login", async (req, res) => {
     });
     res.json({
       token: token,
-      username: foundUser.username,
+      email: foundUser.email,
     });
   } catch (err) {
     res.json(err.message);
