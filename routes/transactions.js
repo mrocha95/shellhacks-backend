@@ -3,6 +3,7 @@ var router = express.Router();
 const Transaction = require("../models/Transaction");
 const { isAuthenticated } = require("../middleware/auth");
 var request = require("request");
+const axios = require("axios");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -19,25 +20,23 @@ router.get("/my-transactions", isAuthenticated, async (req, res) => {
 });
 
 router.post("/create", isAuthenticated, async (req, res) => {
+  console.log(req.body.title);
   try {
-    // var options = {
-    //   method: "POST",
-    //   url: "https://sh-categorize.herokuapp.com/category",
-    //   headers: {
-    //     Accept: "application/json",
-    //   },
-    //   formData: {
-    //     expense: req.body.title,
-    //   },
-    // };
-    // request(options, function (error, response) {
-    //   if (error) throw new Error(error);
-    //   console.log(response.body);
-    // });
+    var FormData = require("form-data");
+    var data = new FormData();
+    data.append("expense", "Netflix");
 
-    // const response = await axios.request(options);
+    var config = {
+      method: "post",
+      url: "https://sh-categorize.herokuapp.com/category",
+      headers: {
+        Accept: "application/json",
+        ...data.getHeaders(),
+      },
+      data: data,
+    };
 
-    // res.json(response.data);
+    const response = await axios(config);
 
     let newTransaction = await Transaction.create({
       title: req.body.title,
@@ -45,7 +44,7 @@ router.post("/create", isAuthenticated, async (req, res) => {
       date: req.body.date,
       amount: req.body.amount,
       type: req.body.type,
-      //   category: response.f,
+      category: response.data.expense,
       creatorId: req.user.id,
     });
 
