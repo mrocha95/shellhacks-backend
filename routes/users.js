@@ -14,7 +14,7 @@ router.get("/", function (req, res, next) {
 
 router.post("/signup", async (req, res) => {
   if (!req.body.email || !req.body.password) {
-    return res.json({ message: "Please enter email and password" });
+    return res.json({ message: "Pleasde enter email and password" });
   }
   try {
     const salt = bcrypt.genSaltSync(saltrounds);
