@@ -28,7 +28,7 @@ router.post("/create", isAuthenticated, async (req, res) => {
 
     var config = {
       method: "post",
-      url: "https://sh-categorize.herokuapp.com/category",
+      url: "https://sh-cat.onrender.com/category",
       headers: {
         Accept: "application/json",
         ...data.getHeaders(),
