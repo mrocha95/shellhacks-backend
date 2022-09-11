@@ -9,7 +9,7 @@ const goalSchema = new mongoose.Schema({
     type: String,
   },
   current: {
-    type: String,
+    type: Number,
   },
   amount: {
     type: Number,
