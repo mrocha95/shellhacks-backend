@@ -62,17 +62,17 @@ router.post("/send", async (req, res) => {
 
 router.post("/receive", async (req, res) => {
   try {
-    console.log(req);
     sender = req.body.From;
     const filter = { phone: sender };
     const user = await Transaction.findOne(filter);
-    console.log(user);
+    console.log("user: ", user);
     const userId = user._id;
-    console.log(userId);
+    console.log("userId: ", userId);
     console.log(`Incoming message from ${req.body.From}: ${req.body.Body}`);
     const incomingMessageText = req.body.Body;
     console.log("incoming: ", incomingMessageText);
     [title, amount, type] = incomingMessageText.split(" ");
+    console.log(title, amount, type)
     await Transaction.create({
       title: title,
       amount: amount,
@@ -80,7 +80,7 @@ router.post("/receive", async (req, res) => {
       creatorId: userId,
     });
   } catch (err) {
-    res.json(err.message);
+    res.json(err.mess age);
     return;
   }
   res.json(200);
