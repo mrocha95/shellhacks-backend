@@ -47,7 +47,7 @@ router.post("/send", async (req, res) => {
   try {
     twilio_client.messages
       .create({
-        body: `Hello from Node ${encodedEmoji}, Reply with title, amount, type`,
+        body: `Hello from SaveExp ${encodedEmoji}! Reply with title, amount, type to add a transaction`,
         to: "+17866748198", // Text this number
         from: "+12058801498", // From a valid Twilio number
       })

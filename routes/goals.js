@@ -1,9 +1,15 @@
 var express = require("express");
 var router = express.Router();
 const Goal = require("../models/Goal");
+const User = require("../models/User");
 const { isAuthenticated } = require("../middleware/auth");
-var request = require("request");
-const axios = require("axios");
+
+require("dotenv/config");
+const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
+const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
+
+const twilio = require("twilio");
+const twilio_client = new twilio(accountSid, authToken);
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -52,6 +58,27 @@ router.post("/update-goal/:id", isAuthenticated, async (req, res) => {
       { ...req.body },
       { new: true }
     );
+    if (updatedGoal.current / updatedGoal.amount >= 0.5) {
+      const goalOwner = await User.findById(updatedGoal.creatorId, "phone");
+      console.log(goalOwner);
+      try {
+        twilio_client.messages
+          .create({
+            body: `You saved more than 50% to your goal ${
+              updatedGoal.title
+            }! ${String.fromCodePoint(
+              "0x1F973"
+            )} Keep going and you will soon be done! ${String.fromCodePoint(
+              "0x1F4AA"
+            )}`,
+            to: goalOwner.phone, // Text this number
+            from: "+12058801498", // From a valid Twilio number
+          })
+          .then((message) => console.log(message.sid));
+      } catch (err) {
+        console.log(err);
+      }
+    }
     res.json(updatedGoal);
   } catch (err) {
     res.json(err.message);
