@@ -73,12 +73,13 @@ router.post("/receive", async (req, res) => {
     console.log("incoming: ", incomingMessageText);
     [title, amount, type] = incomingMessageText.split(" ");
     console.log(title, amount, type);
-    await Transaction.create({
+    mongores = await Transaction.create({
       title: title,
       amount: amount,
       type: type,
       creatorId: userId,
     });
+    console.log(mongores);
   } catch (err) {
     res.json(err.message);
     return;
