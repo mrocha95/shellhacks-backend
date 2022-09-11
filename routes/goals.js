@@ -49,7 +49,7 @@ router.post("/update-goal/:id", isAuthenticated, async (req, res) => {
   try {
     const updatedGoal = await Goal.findByIdAndUpdate(
       req.params.id,
-      { ...req.user.id },
+      { ...req.body },
       { new: true }
     );
     res.json(updatedGoal);
