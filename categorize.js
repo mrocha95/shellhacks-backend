@@ -9,6 +9,7 @@ async function getCategory(title) {
   var config = {
     method: "post",
     url: "https://sh-cat.onrender.com/category",
+    timeout: 20000, // only wait for 2s
     headers: {
       Accept: "application/json",
       ...data.getHeaders(),
