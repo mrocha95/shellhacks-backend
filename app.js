@@ -12,13 +12,11 @@ var transactionsRouter = require("./routes/transactions");
 var smsRouter = require("./routes/sms");
 var goalsRouter = require("./routes/goals");
 
-
 var app = express();
 
 app.listen(3000, () => {
-  console.log("Exppress server listening on port 3000");
+  console.log("Express server listening on port 3000");
 });
-
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -60,17 +58,5 @@ mongoose
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   )
   .catch((err) => console.error("Error connecting to mongo", err));
-
-app.post("/sms", (req, res) => {
-  const twiml = new MessagingResponse();
-
-  const message = twiml.message();
-  message.body("The Robots are coming! Head for the hills!");
-  message.media(
-    "https://farm8.staticflickr.com/7090/6941316406_80b4d6d50e_z_d.jpg"
-  );
-
-  res.type("text/xml").send(twiml.toString());
-});
 
 module.exports = app;

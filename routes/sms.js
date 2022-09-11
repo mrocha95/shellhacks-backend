@@ -1,12 +1,11 @@
 var express = require("express");
 var router = express.Router();
 const Transaction = require("../models/Transaction");
-const { isAuthenticated } = require("../middleware/auth");
-var request = require("request");
 require("dotenv/config");
 const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
 const twilio = require("twilio");
+const { getCategory } = require("../categorize");
 
 const twilio_client = new twilio(accountSid, authToken);
 
@@ -72,12 +71,13 @@ router.post("/receive", async (req, res) => {
     const incomingMessageText = req.body.Body;
     console.log("incoming: ", incomingMessageText);
     [title, amount, type] = incomingMessageText.split(" ");
-    console.log(title, amount, type);
+    const category = await getCategory(title);
     mongores = await Transaction.create({
       title,
       date: "exmaple-date",
       amount,
       type,
+      category: category.data.category,
       creatorId: userId,
     });
     console.log(mongores);

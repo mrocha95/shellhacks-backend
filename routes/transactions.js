@@ -2,8 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Transaction = require("../models/Transaction");
 const { isAuthenticated } = require("../middleware/auth");
-var request = require("request");
-const axios = require("axios");
+const { getCategory } = require("../categorize");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -20,31 +19,16 @@ router.get("/my-transactions", isAuthenticated, async (req, res) => {
 });
 
 router.post("/create", isAuthenticated, async (req, res) => {
-  console.log(req.body.title);
+  const title = req.body.title;
+  const category = await getCategory(title);
   try {
-    var FormData = require("form-data");
-    var data = new FormData();
-    data.append("expense", "Netflix");
-
-    var config = {
-      method: "post",
-      url: "https://sh-cat.onrender.com/category",
-      headers: {
-        Accept: "application/json",
-        ...data.getHeaders(),
-      },
-      data: data,
-    };
-
-    const response = await axios(config);
-
     let newTransaction = await Transaction.create({
       title: req.body.title,
       description: req.body.description,
       date: req.body.date,
       amount: req.body.amount,
       type: req.body.type,
-      category: response.data.expense,
+      category : category.data.category,
       creatorId: req.user.id,
     });
 
