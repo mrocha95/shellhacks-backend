@@ -25,7 +25,7 @@ router.post("/create", isAuthenticated, async (req, res) => {
     let newGoal = await Goal.create({
       title: req.body.title,
       date: req.body.date,
-      current: req.body.initial,
+      current: req.body.current,
       amount: req.body.amount,
       creatorId: req.user.id,
     });
