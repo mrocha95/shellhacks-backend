@@ -13,6 +13,7 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/signup", async (req, res) => {
+  console.log(req.body);
   if (!req.body.email || !req.body.password) {
     return res.json({ message: "Please enter email and password" });
   }
@@ -66,6 +67,7 @@ router.post("/login", async (req, res) => {
     res.json({
       token: token,
       email: foundUser.email,
+      firstName: foundUser.firstName,
     });
   } catch (err) {
     res.json(err.message);
