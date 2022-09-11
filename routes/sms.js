@@ -74,9 +74,10 @@ router.post("/receive", async (req, res) => {
     [title, amount, type] = incomingMessageText.split(" ");
     console.log(title, amount, type);
     mongores = await Transaction.create({
-      title: title,
-      amount: amount,
-      type: type,
+      title,
+      date: "exmaple-date",
+      amount,
+      type,
       creatorId: userId,
     });
     console.log(mongores);
