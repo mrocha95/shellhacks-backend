@@ -72,7 +72,7 @@ router.post("/receive", async (req, res) => {
     const incomingMessageText = req.body.Body;
     console.log("incoming: ", incomingMessageText);
     [title, amount, type] = incomingMessageText.split(" ");
-    console.log(title, amount, type)
+    console.log(title, amount, type);
     await Transaction.create({
       title: title,
       amount: amount,
@@ -80,7 +80,7 @@ router.post("/receive", async (req, res) => {
       creatorId: userId,
     });
   } catch (err) {
-    res.json(err.mess age);
+    res.json(err.message);
     return;
   }
   res.json(200);
