@@ -8,6 +8,9 @@ const goalSchema = new mongoose.Schema({
   date: {
     type: String,
   },
+  current: {
+    type: Number,
+  },
   amount: {
     type: Number,
     required: true,

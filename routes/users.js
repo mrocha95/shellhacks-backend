@@ -26,6 +26,7 @@ router.post("/signup", async (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       age: req.body.age,
+      phone: req.body.phone,
     });
 
     const payload = {

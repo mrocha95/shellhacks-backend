@@ -25,6 +25,7 @@ router.post("/create", isAuthenticated, async (req, res) => {
     let newGoal = await Goal.create({
       title: req.body.title,
       date: req.body.date,
+      current: req.body.initial,
       amount: req.body.amount,
       creatorId: req.user.id,
     });
@@ -48,7 +49,7 @@ router.post("/update-goal/:id", isAuthenticated, async (req, res) => {
   try {
     const updatedGoal = await Goal.findByIdAndUpdate(
       req.params.id,
-      { ...req.body },
+      { ...req.user.id },
       { new: true }
     );
     res.json(updatedGoal);
