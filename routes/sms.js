@@ -65,7 +65,7 @@ router.post("/receive", async (req, res) => {
     const filter = { phone: sender };
     const user = await Transaction.findOne(filter);
     console.log("user: ", user);
-    const userId = user._id;
+    const userId = "631d5c36fcd2ac57734a8bfe";
     console.log("userId: ", userId);
     console.log(`Incoming message from ${req.body.From}: ${req.body.Body}`);
     const incomingMessageText = req.body.Body;
